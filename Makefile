@@ -11,6 +11,8 @@ start: # развернуть приложение с нуля
 	php artisan sail:install
 	./vendor/bin/sail up -d
 	./vendor/bin/sail artisan key:generate
+
+seed: # заполнить приложение сидерами
 	./vendor/bin/sail artisan migrate
 	./vendor/bin/sail artisan app:set-up
 	./vendor/bin/sail artisan db:seed
