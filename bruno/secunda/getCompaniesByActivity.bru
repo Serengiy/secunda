@@ -1,0 +1,20 @@
+meta {
+  name: getCompaniesByActivity
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://localhost/api/companies/activity/1
+  body: none
+  auth: inherit
+}
+
+headers {
+  token: 4f40b24c-a67d-460f-94a0-e1d8c2d1ce55
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,0 +1,26 @@
+meta {
+  name: getNearesCompany
+  type: http
+  seq: 5
+}
+
+get {
+  url: http://localhost/api/companies/nearest?latitude=40.219881&longitude=71.665632&radius=5
+  body: none
+  auth: inherit
+}
+
+params:query {
+  latitude: 40.219881
+  longitude: 71.665632
+  radius: 5
+}
+
+headers {
+  token: 4f40b24c-a67d-460f-94a0-e1d8c2d1ce55
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

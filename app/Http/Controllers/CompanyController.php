@@ -27,6 +27,7 @@ class CompanyController extends Controller
         $activityIds = $this->getActivityTree($activity);
 
         $companies = Company::query()
+            ->with(['building', 'activities'])
             ->filter($request->all())
             ->whereHas('activities', fn (Builder $q) => $q->whereIn('activities.id', $activityIds));
 
@@ -42,6 +43,7 @@ class CompanyController extends Controller
         $radius = $request->float('radius', 1); // км
 
         $companies = Company::query()
+            ->with(['building', 'activities'])
             ->whereHas('building', function (Builder $query) use ($lat, $lng, $radius) {
                 // Формула гаверсина (Haversine) для расчёта расстояния
                 $query->whereRaw("

@@ -1,0 +1,20 @@
+meta {
+  name: getCompanies
+  type: http
+  seq: 3
+}
+
+get {
+  url: http://localhost/api/companies/
+  body: none
+  auth: inherit
+}
+
+headers {
+  token: 4f40b24c-a67d-460f-94a0-e1d8c2d1ce55
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
