@@ -8,6 +8,7 @@ include .env
 
 start: # развернуть приложение с нуля
 	composer install
+	cp .env.example .env
 	docker compose up -d --remove-orphans
 	./vendor/bin/sail artisan key:generate
 	./vendor/bin/sail artisan migrate
