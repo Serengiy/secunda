@@ -12,6 +12,32 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class CompanyController extends Controller
 {
+
+    /**
+     * Get paginated list of companies.
+     *
+     * @group Company management
+     *
+     * @queryParam per_page int The number of items per page. Default is 15. Example: 10
+     *
+     * @response 200 {
+     *   "data": [
+     *     {
+     *       "id": 1,
+     *       "name": "Company 1",
+     *       "building": {
+     *           "id": 1,
+     *           "address": "Some address"
+     *       },
+     *       "activities": [
+     *           {"id": 1, "name": "Activity 1"}
+     *       ]
+     *     }
+     *   ],
+     *   "links": {...},
+     *   "meta": {...}
+     * }
+     */
     public function index(Request $request): AnonymousResourceCollection
     {
         $companies = Company::query()
@@ -22,6 +48,28 @@ class CompanyController extends Controller
         return CompanyResource::collection($companies);
     }
 
+
+    /**
+     * Get companies by activity (including child activities).
+     *
+     * @group Company management
+     *
+     * @urlParam activity int required The ID of the activity Example: 1
+     * @queryParam per_page int The number of items per page. Default is 15. Example: 10
+     *
+     * @response 200 {
+     *   "data": [
+     *     {
+     *       "id": 1,
+     *       "name": "Company 1",
+     *       "building": {...},
+     *       "activities": [...]
+     *     }
+     *   ],
+     *   "links": {...},
+     *   "meta": {...}
+     * }
+     */
     public function activityIndex(Request $request, Activity $activity): AnonymousResourceCollection
     {
         $activityIds = $this->getActivityTree($activity);
@@ -36,6 +84,29 @@ class CompanyController extends Controller
         );
     }
 
+
+    /**
+     * Get companies nearest to a given location within a radius.
+     *
+     * @group Company management
+     *
+     * @queryParam latitude float required Latitude Example: 37.7749
+     * @queryParam longitude float required Longitude Example: -122.4194
+     * @queryParam radius float The search radius in km. Default is 1. Example: 5
+     *
+     * @response 200 {
+     *   "data": [
+     *     {
+     *       "id": 1,
+     *       "name": "Company 1",
+     *       "building": {...},
+     *       "activities": [...]
+     *     }
+     *   ],
+     *   "links": {...},
+     *   "meta": {...}
+     * }
+     */
     public function nearest(NearestCompanyRequest $request): AnonymousResourceCollection
     {
         $lat = $request->float('latitude');
@@ -58,6 +129,22 @@ class CompanyController extends Controller
         return CompanyResource::collection($companies->paginate());
     }
 
+    /**
+     * Get a single company by ID.
+     *
+     * @group Company management
+     *
+     * @urlParam company int required The ID of the company Example: 1
+     *
+     * @response 200 {
+     *   "data": {
+     *       "id": 1,
+     *       "name": "Company 1",
+     *       "building": {...},
+     *       "activities": [...]
+     *   }
+     * }
+     */
     public function show(Company $company): CompanyResource
     {
         $company->load(['building', 'activities']);
