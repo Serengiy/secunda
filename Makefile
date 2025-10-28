@@ -9,7 +9,7 @@ include .env
 start: # развернуть приложение с нуля
 	composer install
 	php artisan sail:install
-	docker compose up -d --remove-orphans
+	./vendor/bin/sail up -d
 	./vendor/bin/sail artisan key:generate
 	./vendor/bin/sail artisan migrate
 	./vendor/bin/sail artisan app:set-up
