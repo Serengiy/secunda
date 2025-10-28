@@ -13,8 +13,13 @@ return new class extends Migration
     {
         Schema::create('activities', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->index();
+            $table->unsignedBigInteger('parent_id')->nullable()->index();
+            $table->text('description')->nullable();
             $table->timestamps();
-        });
+
+            $table->foreign('parent_id')->references('id')->on('activities')->onDelete('cascade');
+});
     }
 
     /**
@@ -22,6 +27,10 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::table('activities', function (Blueprint $table) {
+            $table->dropForeign(['parent_id']);
+        });
+
         Schema::dropIfExists('activities');
     }
 };
